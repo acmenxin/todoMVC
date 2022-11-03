@@ -8,7 +8,7 @@ function TodoItem(props){
 			<ul className="todo-list" key={index}>
 			<li className={item.isCompleted===true?"completed":''} >
 				<div className="view">
-					<input className="toggle" type="checkbox" defaultChecked={item.isCompleted} 
+					<input className="toggle" type="checkbox" checked={item.isCompleted} 
 					onChange={()=>{dispatch({type:"isCompleted",payload:index})}} />
 					<label>{item.task}</label>
 					<button className="destroy"></button>

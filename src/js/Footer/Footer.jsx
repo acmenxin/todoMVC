@@ -1,7 +1,12 @@
 import { useContext ,createContext} from "react"
+import {TasksContext} from "./../App"
 function Footer(props){
-	const TasksContext = createContext({})
 	const {state,dispatch} = useContext(TasksContext)
+	// const {activeTodoCount} =props
+	// console.log(activeTodoCount,"footer");
+	// console.log(state.length,"stateFooter");
+	// 已完成的对勾个数
+	// var completedCount = state.length - activeTodoCount;
 		  return(
             <footer className="footer">
 				<span className="todo-count"><strong>0</strong> item left</span>

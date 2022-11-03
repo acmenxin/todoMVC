@@ -136,14 +136,14 @@ body {
 	content: '❯';
 	display: inline-block;
 	font-size: 22px;
-	color: #949494;
+	color: #f2cff2;
 	padding: 10px 27px 10px 27px;
 	-webkit-transform: rotate(90deg);
 	transform: rotate(90deg);
 }
 
 .toggle-all:checked + label:before {
-	color: #484848;
+	color: #ef37ca;
 }
 
 .todo-list {

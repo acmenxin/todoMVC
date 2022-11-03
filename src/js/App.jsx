@@ -17,6 +17,11 @@ function reducer(state, action) {
 					}
 				})
 				return [...state]
+			case "toggleAll": //全选反选按钮
+				state.map((item)=>{
+					return item.isCompleted=action.payload
+				})
+				return [...state]
 			default:
 				return state;
 		}
@@ -24,13 +29,16 @@ function reducer(state, action) {
 export const TasksContext = createContext({})
 function App() {
 	const [state, dispatch] = useReducer(reducer, initState)
+	let activeTodoCount = state.reduce(function (accum, todo) {
+		return todo.isCompleted ? accum : accum + 1;
+	}, 0);
 	return (
 		<div className="App">
 		{/**主体部分*/}
 			<section className="todoapp">
 				<TasksContext.Provider value={{ state, dispatch }}>
 					<Header />
-					<TodoList />
+					<TodoList props={activeTodoCount}/>
 					<Footer />
 				</TasksContext.Provider>
 			</section>
