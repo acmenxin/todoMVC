@@ -1,5 +1,5 @@
 import { useContext } from "react"
-import { Link } from "react-router-dom"
+import { NavLink } from "react-router-dom"
 import {TasksContext} from "./../App"
 function Footer(props){
 	const {state,dispatch} = useContext(TasksContext)
@@ -14,13 +14,13 @@ function Footer(props){
 				<span className="todo-count"><strong>{completedCount}</strong> item left</span>
 				<ul className="filters">
 					<li>
-						<Link to="/" className="selected" >All</Link>
+						<NavLink to="/" >All</NavLink>
 					</li>
 					<li>
-						<Link to="/active">Active</Link>
+						<NavLink to="/active" activeClassName="selected" >Active</NavLink>
 					</li>
 					<li>
-						<Link to="/completed">Completed</Link>
+						<NavLink to="/completed" activeClassName="selected">Completed</NavLink>
 					</li>
 				</ul>
 				<button className="clear-completed" onClick={handleClear}>Clear completed</button>

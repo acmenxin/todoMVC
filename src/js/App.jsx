@@ -1,12 +1,15 @@
-import { useReducer, createContext } from "react";
+import { useReducer, createContext ,memo ,Suspense,lazy, useEffect, useCallback, useMemo, useState} from "react";
 import {BrowserRouter,Route,Switch} from "react-router-dom"
-import TodoList from "./Todolist/TodoList.jsx"
 import Header from "./Header/Header.jsx"
 import Footer from "./Footer/Footer.jsx"
-let initState = [
-	{ task: "任务1", isCompleted: true },
-	{ task: "任务2", isCompleted: true },
-]
+const TodoList = lazy(()=>import ("./Todolist/TodoList"))
+const MemoHeader = memo(Header)
+const MemoFooter = memo(Footer)
+//测试数据
+// let initState = [
+// 	{ task: "任务1", isCompleted: true },
+// 	{ task: "任务2", isCompleted: true },
+// ]
 function reducer(state, action) {
 		switch (action.type) {
 			case "submit": //回车提交
@@ -20,7 +23,7 @@ function reducer(state, action) {
 				return [...state]
 			case "toggleAll": //全选反选按钮
 				state.map((item)=>{
-					return item.isCompleted=action.payload
+					return item.isCompleted = action.payload
 				})
 				return [...state]
 			case "clearCompleted": //清除已完成
@@ -34,25 +37,37 @@ function reducer(state, action) {
 	}
 export const TasksContext = createContext({})
 function App(props) {
-	const [state, dispatch] = useReducer(reducer, initState)
-	const activeTodoCount = state.reduce(function (accum, todo) {
+	const [stateAfter,setAfter] = useState(()=>{
+		const saved = localStorage.getItem("state")
+		return JSON.parse(saved)
+	})
+	const [state, dispatch] = useReducer(reducer, stateAfter)
+	const activeTodoCount = state.reduce((accum, todo)=>{
 		return todo.isCompleted ? accum : accum + 1;
-	}, 0);
+	},0)
+	//第一次挂载后立即获取缓存数据
+	useEffect(() => {
+		localStorage.setItem("state", JSON.stringify(state));
+	  }, [state]);  
+	//   console.log(stateAfter,"stateAfter");
 	return (
 		<div className="App">
 		{/**主体部分*/}
 		<section className="todoapp">  
+				<Suspense fallback={<h2>Loading..</h2>}>
 				<TasksContext.Provider value={{ state, dispatch }}>
-					<Header />	
+					<MemoHeader />	
 					<BrowserRouter>
 					  <Switch>
 					     <Route path="/" component={TodoList} activeTodoCount={activeTodoCount} exact/>
 					     <Route path="/active" component={TodoList} />
 					     <Route path="/completed" component={TodoList} />
 					  </Switch>
-					<Footer activeTodoCount={activeTodoCount} />
+					<MemoFooter activeTodoCount={activeTodoCount} />
 					</BrowserRouter>
 				</TasksContext.Provider>
+				</Suspense>
+				
 			</section>
 		{/**尾部 */}
 			<footer className="info">

@@ -3,9 +3,9 @@ import {TasksContext} from "./../App"
 function Header (props){
 	const [value,setValue] = useState('')
 	const {state,dispatch} = useContext(TasksContext)
-	const handleInput = (e)=>{
+	const handleInput = useCallback((e)=>{
 		setValue(e.target.value)
-	}
+	},[value])
 	const handleKeyDown =useCallback((e)=>{
 		if(e.keyCode!==13){
 			return

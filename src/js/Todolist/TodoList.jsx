@@ -12,7 +12,7 @@ function TodoList(props){
 	}
 	return(
 		<section className="main">
-				<input id="toggle-all" className="toggle-all" type="checkbox" onChange={toggleAll} checked={activeTodoCount === 0} />
+				<input id="toggle-all" className="toggle-all" type="checkbox" onChange={toggleAll}  />
 				<label htmlFor="toggle-all">Mark all as complete</label>
 				<TodoContext.Provider value={{state,dispatch}}>
 					<TodoItem matchPath={path} matchUrl={url}/>
