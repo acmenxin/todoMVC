@@ -1,27 +1,29 @@
-import { useContext ,createContext} from "react"
+import { useContext } from "react"
+import { Link } from "react-router-dom"
 import {TasksContext} from "./../App"
 function Footer(props){
 	const {state,dispatch} = useContext(TasksContext)
-	// const {activeTodoCount} =props
-	// console.log(activeTodoCount,"footer");
-	// console.log(state.length,"stateFooter");
+	const {activeTodoCount} =props
 	// 已完成的对勾个数
-	// var completedCount = state.length - activeTodoCount;
-		  return(
+	var completedCount = state.length - activeTodoCount;
+	const handleClear=()=>{
+		dispatch({type:"clearCompleted"})
+	}
+		return(
             <footer className="footer">
-				<span className="todo-count"><strong>0</strong> item left</span>
+				<span className="todo-count"><strong>{completedCount}</strong> item left</span>
 				<ul className="filters">
 					<li>
-						<a className="selected" href="#/">All</a>
+						<Link to="/" className="selected" >All</Link>
 					</li>
 					<li>
-						<a href="#/active">Active</a>
+						<Link to="/active">Active</Link>
 					</li>
 					<li>
-						<a href="#/completed">Completed</a>
+						<Link to="/completed">Completed</Link>
 					</li>
 				</ul>
-				<button className="clear-completed">Clear completed</button>
+				<button className="clear-completed" onClick={handleClear}>Clear completed</button>
 			</footer>
         )	
     }

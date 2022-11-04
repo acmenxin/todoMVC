@@ -3,8 +3,8 @@ import TodoItem from "./TodoItem"
 import {TasksContext} from "./../App"
 export const TodoContext = createContext()
 function TodoList(props){
-	let {activeTodoCount} =props
-	console.log(activeTodoCount,"active");
+	const {path,url} = props.match
+	const {activeTodoCount} =props
 	const {state,dispatch} = useContext(TasksContext)
 	const toggleAll=(e)=>{
 		let isChecked = e.target.checked
@@ -13,9 +13,9 @@ function TodoList(props){
 	return(
 		<section className="main">
 				<input id="toggle-all" className="toggle-all" type="checkbox" onChange={toggleAll} checked={activeTodoCount === 0} />
-				<label htmlFor="toggle-all">Mark all as complete????????</label>
+				<label htmlFor="toggle-all">Mark all as complete</label>
 				<TodoContext.Provider value={{state,dispatch}}>
-					<TodoItem />
+					<TodoItem matchPath={path} matchUrl={url}/>
 				</TodoContext.Provider>
 		</section>
 	)

@@ -1,4 +1,5 @@
 import { useReducer, createContext } from "react";
+import {BrowserRouter,Route,Switch} from "react-router-dom"
 import TodoList from "./Todolist/TodoList.jsx"
 import Header from "./Header/Header.jsx"
 import Footer from "./Footer/Footer.jsx"
@@ -22,24 +23,35 @@ function reducer(state, action) {
 					return item.isCompleted=action.payload
 				})
 				return [...state]
+			case "clearCompleted": //清除已完成
+				return [...state.filter(item=>{return item.isCompleted===false})]
+			case "deleteTask": //删除某一个task
+				state.splice(action.payload,1)
+				return [...state]
 			default:
 				return state;
 		}
 	}
 export const TasksContext = createContext({})
-function App() {
+function App(props) {
 	const [state, dispatch] = useReducer(reducer, initState)
-	let activeTodoCount = state.reduce(function (accum, todo) {
+	const activeTodoCount = state.reduce(function (accum, todo) {
 		return todo.isCompleted ? accum : accum + 1;
 	}, 0);
 	return (
 		<div className="App">
 		{/**主体部分*/}
-			<section className="todoapp">
+		<section className="todoapp">  
 				<TasksContext.Provider value={{ state, dispatch }}>
-					<Header />
-					<TodoList props={activeTodoCount}/>
-					<Footer />
+					<Header />	
+					<BrowserRouter>
+					  <Switch>
+					     <Route path="/" component={TodoList} activeTodoCount={activeTodoCount} exact/>
+					     <Route path="/active" component={TodoList} />
+					     <Route path="/completed" component={TodoList} />
+					  </Switch>
+					<Footer activeTodoCount={activeTodoCount} />
+					</BrowserRouter>
 				</TasksContext.Provider>
 			</section>
 		{/**尾部 */}

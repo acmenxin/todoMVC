@@ -1,4 +1,4 @@
-import { useState,useContext } from "react"
+import { useState,useContext,useCallback } from "react"
 import {TasksContext} from "./../App"
 function Header (props){
 	const [value,setValue] = useState('')
@@ -6,10 +6,15 @@ function Header (props){
 	const handleInput = (e)=>{
 		setValue(e.target.value)
 	}
-	const handleKeyDown =(e)=>{
-		if(e.code==="Enter"){
-			dispatch({type:"submit",payload:value})}
+	const handleKeyDown =useCallback((e)=>{
+		if(e.keyCode!==13){
+			return
 		}
+		e.preventDefault()
+		if(e.keyCode===13&&value!==''){
+			dispatch({type:"submit",payload:value})}
+			setValue('')
+		},[value])
 	return(
 		 <header className="header">
 				<h1>TodoMVC</h1>
